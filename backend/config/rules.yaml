@@ -1,0 +1,36 @@
+# Athar detection-engine configuration.
+# Every value here is a DESIGN CHOICE for the prototype, not a clinically validated threshold.
+# Each rule names the evidence that motivates it (see the Clinical Evidence Document).
+
+insufficient_information:
+  # Fewer encounters with any extractable clinical content than this -> INSUFFICIENT.
+  min_content_encounters: 2
+  # A single encounter mentioning relevant pain cannot show recurrence (NICE: "persistent or recurrent").
+  single_relevant_encounter_is_insufficient: true
+  # If relevant pain is present but the record never documents the menstrual relationship,
+  # severity or treatment response, the assessment is flagged as low-confidence.
+  min_documentation_completeness: 0.2
+
+flag_guardrails:
+  # The model score alone never produces a flag; the documented pattern must also satisfy these.
+  min_relevant_encounters: 2          # no flag from one visit (evidence doc, "never alone")
+  require_strong_or_supporting: true  # weak-tier symptoms (fatigue, bloating, HMB) can never flag
+  # Score threshold is chosen on the synthetic DEVELOPMENT set during training and stored with the
+  # model; set a number here to override it.
+  score_threshold_override: null
+
+temporal:
+  persistence_after_treatment_days: 56          # pain documented >= 8 weeks after a pain treatment
+  persistence_after_normal_investigation_days: 1
+  escalation_recent_window_months: 12
+  chronic_pain_months: 6                         # NICE: chronic pelvic pain >= 6 months
+
+priority:
+  # 1 = review first. Strong imaging findings or several strong domains move a flag to priority 1.
+  high_priority_min_strong_domains: 2
+
+llm:
+  model: "google/gemini-2.5-flash"   # any OpenRouter model id; override with ATHAR_LLM_MODEL
+  temperature_extraction: 0.0
+  temperature_generation: 0.7
+  max_concurrency: 2

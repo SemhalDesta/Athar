@@ -1,0 +1,55 @@
+{
+  "chosen_model": "logistic_regression",
+  "selection": "highest 5-fold cross-validated ROC-AUC on the synthetic development set",
+  "candidates": {
+    "logistic_regression": {
+      "cv_auc": 0.857,
+      "cv_average_precision": 0.814
+    },
+    "random_forest": {
+      "cv_auc": 0.83,
+      "cv_average_precision": 0.775
+    },
+    "xgboost": {
+      "cv_auc": 0.851,
+      "cv_average_precision": 0.787
+    }
+  },
+  "threshold": 0.399,
+  "threshold_rule": "highest score threshold with out-of-fold sensitivity >= 80% on the development set",
+  "features": [
+    "n_relevant_encounters",
+    "pain_span_months",
+    "n_strong_domains",
+    "n_domains",
+    "n_dysmenorrhoea",
+    "n_pelvic_pain",
+    "n_dyspareunia",
+    "n_dyschezia",
+    "n_urinary",
+    "n_subfertility",
+    "n_hmb",
+    "n_weak_symptoms",
+    "n_cyclical_nonmenstrual",
+    "n_explicit_noncyclical",
+    "severe_or_impact",
+    "persist_after_treatment",
+    "documented_treatment_failure",
+    "documented_treatment_success",
+    "persist_after_normal_investigation",
+    "suggestive_imaging",
+    "n_alt_explanations",
+    "alt_explains_all",
+    "escalation",
+    "gyn_referral",
+    "family_history",
+    "n_uncertain",
+    "documentation_completeness",
+    "record_span_months",
+    "age"
+  ],
+  "extractor": "llm:anthropic/claude-sonnet-5.5-20260928",
+  "n_train": 400,
+  "n_positive": 141,
+  "warning": "Trained on synthetic data. Scores are illustrative and not clinically validated probabilities."
+}

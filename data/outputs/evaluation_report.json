@@ -1,0 +1,1570 @@
+{
+ "caveat": "These results measure performance on synthetic data generated for development. They show that the pipeline behaves as designed on constructed scenarios; they do NOT demonstrate clinical accuracy. Real-world performance requires real, labelled, de-identified records and external validation.",
+ "extractor": "llm:anthropic/claude-sonnet-5.5-20260928",
+ "model": {
+  "chosen_model": "logistic_regression",
+  "selection": "highest 5-fold cross-validated ROC-AUC on the synthetic development set",
+  "candidates": {
+   "logistic_regression": {
+    "cv_auc": 0.857,
+    "cv_average_precision": 0.814
+   },
+   "random_forest": {
+    "cv_auc": 0.83,
+    "cv_average_precision": 0.775
+   },
+   "xgboost": {
+    "cv_auc": 0.851,
+    "cv_average_precision": 0.787
+   }
+  },
+  "threshold": 0.399,
+  "threshold_rule": "highest score threshold with out-of-fold sensitivity >= 80% on the development set",
+  "features": [
+   "n_relevant_encounters",
+   "pain_span_months",
+   "n_strong_domains",
+   "n_domains",
+   "n_dysmenorrhoea",
+   "n_pelvic_pain",
+   "n_dyspareunia",
+   "n_dyschezia",
+   "n_urinary",
+   "n_subfertility",
+   "n_hmb",
+   "n_weak_symptoms",
+   "n_cyclical_nonmenstrual",
+   "n_explicit_noncyclical",
+   "severe_or_impact",
+   "persist_after_treatment",
+   "documented_treatment_failure",
+   "documented_treatment_success",
+   "persist_after_normal_investigation",
+   "suggestive_imaging",
+   "n_alt_explanations",
+   "alt_explains_all",
+   "escalation",
+   "gyn_referral",
+   "family_history",
+   "n_uncertain",
+   "documentation_completeness",
+   "record_span_months",
+   "age"
+  ],
+  "extractor": "llm:anthropic/claude-sonnet-5.5-20260928",
+  "n_train": 400,
+  "n_positive": 141,
+  "warning": "Trained on synthetic data. Scores are illustrative and not clinically validated probabilities."
+ },
+ "n_patients": 200,
+ "category_counts": {
+  "PATTERN WARRANTS CLINICAL REVIEW": 75,
+  "NO NOTABLE PATTERN IDENTIFIED": 116,
+  "INSUFFICIENT INFORMATION": 9
+ },
+ "A_constructed_scenarios": {
+  "description": "Athar's category vs the category the scenario was built to show (documented pattern, not diagnosis).",
+  "confusion_matrix_expected_rows_predicted_cols": {
+   "PATTERN WARRANTS CLINICAL REVIEW": {
+    "PATTERN WARRANTS CLINICAL REVIEW": 66,
+    "INSUFFICIENT INFORMATION": 0,
+    "NO NOTABLE PATTERN IDENTIFIED": 38
+   },
+   "INSUFFICIENT INFORMATION": {
+    "PATTERN WARRANTS CLINICAL REVIEW": 2,
+    "INSUFFICIENT INFORMATION": 9,
+    "NO NOTABLE PATTERN IDENTIFIED": 3
+   },
+   "NO NOTABLE PATTERN IDENTIFIED": {
+    "PATTERN WARRANTS CLINICAL REVIEW": 7,
+    "INSUFFICIENT INFORMATION": 0,
+    "NO NOTABLE PATTERN IDENTIFIED": 75
+   }
+  },
+  "three_class_accuracy": 0.75,
+  "review_vs_not": {
+   "n": 200,
+   "tp": 66,
+   "fp": 9,
+   "tn": 87,
+   "fn": 38,
+   "sensitivity": 0.635,
+   "specificity": 0.906,
+   "precision": 0.88,
+   "f1": 0.737,
+   "false_positive_rate": 0.094,
+   "false_negative_rate": 0.365
+  },
+  "insufficient_detection": {
+   "n": 200,
+   "tp": 9,
+   "fp": 0,
+   "tn": 186,
+   "fn": 5,
+   "sensitivity": 0.643,
+   "specificity": 1.0,
+   "precision": 1.0,
+   "f1": 0.783,
+   "false_positive_rate": 0.0,
+   "false_negative_rate": 0.357
+  }
+ },
+ "B_hidden_label": {
+  "description": "Flag (PATTERN WARRANTS CLINICAL REVIEW) vs the synthetic hidden endometriosis label. INSUFFICIENT counts as not flagged.",
+  "all_patients": {
+   "n": 200,
+   "tp": 52,
+   "fp": 23,
+   "tn": 104,
+   "fn": 21,
+   "sensitivity": 0.712,
+   "specificity": 0.819,
+   "precision": 0.693,
+   "f1": 0.703,
+   "false_positive_rate": 0.181,
+   "false_negative_rate": 0.288
+  },
+  "model_score_auc": 0.867
+ },
+ "pipeline": "LLM reader + model + rules + sceptic agent",
+ "sceptic": {
+  "coverage": 1.0,
+  "flags_reviewed": 75,
+  "flags_total": 75,
+  "downgraded": 0,
+  "downgraded_label_negative": 0,
+  "downgraded_label_positive": 0,
+  "without": {
+   "vs_label": {
+    "n": 200,
+    "tp": 52,
+    "fp": 23,
+    "tn": 104,
+    "fn": 21,
+    "sensitivity": 0.712,
+    "specificity": 0.819,
+    "precision": 0.693,
+    "f1": 0.703,
+    "false_positive_rate": 0.181,
+    "false_negative_rate": 0.288
+   },
+   "vs_constructed": {
+    "n": 200,
+    "tp": 66,
+    "fp": 9,
+    "tn": 87,
+    "fn": 38,
+    "sensitivity": 0.635,
+    "specificity": 0.906,
+    "precision": 0.88,
+    "f1": 0.737,
+    "false_positive_rate": 0.094,
+    "false_negative_rate": 0.365
+   }
+  },
+  "with": {
+   "vs_label": {
+    "n": 200,
+    "tp": 52,
+    "fp": 23,
+    "tn": 104,
+    "fn": 21,
+    "sensitivity": 0.712,
+    "specificity": 0.819,
+    "precision": 0.693,
+    "f1": 0.703,
+    "false_positive_rate": 0.181,
+    "false_negative_rate": 0.288
+   },
+   "vs_constructed": {
+    "n": 200,
+    "tp": 66,
+    "fp": 9,
+    "tn": 87,
+    "fn": 38,
+    "sensitivity": 0.635,
+    "specificity": 0.906,
+    "precision": 0.88,
+    "f1": 0.737,
+    "false_positive_rate": 0.094,
+    "false_negative_rate": 0.365
+   }
+  },
+  "note": "Both rows use the same 200 patients and the same extraction; only the sceptic step differs.",
+  "by_verdict": {
+   "upheld": {
+    "n": 49,
+    "label_positive": 39
+   },
+   "weakened": {
+    "n": 26,
+    "label_positive": 13
+   },
+   "challenged": {
+    "n": 0,
+    "label_positive": 0
+   }
+  }
+ },
+ "documentation": {
+  "by_record_length": {
+   "1 to 3 documented visits": {
+    "n": 31,
+    "label_positive": 8,
+    "sensitivity": 0.375,
+    "specificity": 0.913
+   },
+   "4 to 7 documented visits": {
+    "n": 95,
+    "label_positive": 28,
+    "sensitivity": 0.607,
+    "specificity": 0.791
+   },
+   "8 or more documented visits": {
+    "n": 74,
+    "label_positive": 37,
+    "sensitivity": 0.865,
+    "specificity": 0.811
+   }
+  },
+  "by_note_completeness": {
+   "Rarely recorded (under a third)": {
+    "n": 8,
+    "label_positive": 2,
+    "sensitivity": 0.0,
+    "specificity": 0.667
+   },
+   "Sometimes recorded": {
+    "n": 8,
+    "label_positive": 3,
+    "sensitivity": 0.667,
+    "specificity": 0.8
+   },
+   "Usually recorded (two thirds or more)": {
+    "n": 153,
+    "label_positive": 56,
+    "sensitivity": 0.893,
+    "specificity": 0.794
+   }
+  },
+  "note": "Note completeness = share of pain visits whose note records the link to periods, the severity or the response to treatment. Only patients with at least one relevant pain visit are grouped by completeness."
+ },
+ "roc_eval": [
+  [
+   0.0,
+   0.0
+  ],
+  [
+   0.0,
+   0.027
+  ],
+  [
+   0.0,
+   0.11
+  ],
+  [
+   0.0,
+   0.151
+  ],
+  [
+   0.0,
+   0.178
+  ],
+  [
+   0.0,
+   0.192
+  ],
+  [
+   0.0,
+   0.219
+  ],
+  [
+   0.0,
+   0.247
+  ],
+  [
+   0.008,
+   0.247
+  ],
+  [
+   0.008,
+   0.479
+  ],
+  [
+   0.016,
+   0.479
+  ],
+  [
+   0.024,
+   0.493
+  ],
+  [
+   0.024,
+   0.507
+  ],
+  [
+   0.039,
+   0.507
+  ],
+  [
+   0.039,
+   0.548
+  ],
+  [
+   0.047,
+   0.548
+  ],
+  [
+   0.047,
+   0.562
+  ],
+  [
+   0.087,
+   0.562
+  ],
+  [
+   0.087,
+   0.658
+  ],
+  [
+   0.118,
+   0.658
+  ],
+  [
+   0.118,
+   0.685
+  ],
+  [
+   0.126,
+   0.699
+  ],
+  [
+   0.134,
+   0.699
+  ],
+  [
+   0.134,
+   0.726
+  ],
+  [
+   0.181,
+   0.726
+  ],
+  [
+   0.181,
+   0.74
+  ],
+  [
+   0.181,
+   0.767
+  ],
+  [
+   0.213,
+   0.767
+  ],
+  [
+   0.228,
+   0.767
+  ],
+  [
+   0.228,
+   0.781
+  ],
+  [
+   0.236,
+   0.781
+  ],
+  [
+   0.236,
+   0.795
+  ],
+  [
+   0.244,
+   0.795
+  ],
+  [
+   0.244,
+   0.808
+  ],
+  [
+   0.26,
+   0.808
+  ],
+  [
+   0.268,
+   0.808
+  ],
+  [
+   0.268,
+   0.822
+  ],
+  [
+   0.299,
+   0.822
+  ],
+  [
+   0.299,
+   0.836
+  ],
+  [
+   0.315,
+   0.836
+  ],
+  [
+   0.315,
+   0.863
+  ],
+  [
+   0.323,
+   0.863
+  ],
+  [
+   0.323,
+   0.877
+  ],
+  [
+   0.331,
+   0.877
+  ],
+  [
+   0.331,
+   0.89
+  ],
+  [
+   0.354,
+   0.89
+  ],
+  [
+   0.37,
+   0.89
+  ],
+  [
+   0.378,
+   0.89
+  ],
+  [
+   0.378,
+   0.904
+  ],
+  [
+   0.402,
+   0.904
+  ],
+  [
+   0.417,
+   0.904
+  ],
+  [
+   0.465,
+   0.904
+  ],
+  [
+   0.472,
+   0.918
+  ],
+  [
+   0.543,
+   0.918
+  ],
+  [
+   0.543,
+   0.932
+  ],
+  [
+   0.575,
+   0.932
+  ],
+  [
+   0.654,
+   0.932
+  ],
+  [
+   0.654,
+   0.945
+  ],
+  [
+   0.661,
+   0.945
+  ],
+  [
+   0.661,
+   0.959
+  ],
+  [
+   0.669,
+   0.959
+  ],
+  [
+   0.685,
+   0.959
+  ],
+  [
+   0.685,
+   0.973
+  ],
+  [
+   0.693,
+   0.973
+  ],
+  [
+   0.709,
+   0.973
+  ],
+  [
+   0.724,
+   0.973
+  ],
+  [
+   0.724,
+   0.986
+  ],
+  [
+   0.732,
+   0.986
+  ],
+  [
+   0.748,
+   0.986
+  ],
+  [
+   0.78,
+   0.986
+  ],
+  [
+   0.795,
+   0.986
+  ],
+  [
+   0.85,
+   0.986
+  ],
+  [
+   0.866,
+   0.986
+  ],
+  [
+   0.89,
+   0.986
+  ],
+  [
+   0.898,
+   0.986
+  ],
+  [
+   0.929,
+   0.986
+  ],
+  [
+   0.929,
+   1.0
+  ],
+  [
+   0.937,
+   1.0
+  ],
+  [
+   0.953,
+   1.0
+  ],
+  [
+   0.984,
+   1.0
+  ],
+  [
+   1.0,
+   1.0
+  ]
+ ],
+ "threshold_curve": {
+  "points": [
+   {
+    "t": 0.02,
+    "sensitivity": 1.0,
+    "specificity": 0.085
+   },
+   {
+    "t": 0.04,
+    "sensitivity": 0.993,
+    "specificity": 0.151
+   },
+   {
+    "t": 0.06,
+    "sensitivity": 0.979,
+    "specificity": 0.205
+   },
+   {
+    "t": 0.08,
+    "sensitivity": 0.965,
+    "specificity": 0.243
+   },
+   {
+    "t": 0.1,
+    "sensitivity": 0.965,
+    "specificity": 0.263
+   },
+   {
+    "t": 0.12,
+    "sensitivity": 0.95,
+    "specificity": 0.29
+   },
+   {
+    "t": 0.14,
+    "sensitivity": 0.95,
+    "specificity": 0.324
+   },
+   {
+    "t": 0.16,
+    "sensitivity": 0.95,
+    "specificity": 0.359
+   },
+   {
+    "t": 0.18,
+    "sensitivity": 0.943,
+    "specificity": 0.394
+   },
+   {
+    "t": 0.2,
+    "sensitivity": 0.943,
+    "specificity": 0.417
+   },
+   {
+    "t": 0.22,
+    "sensitivity": 0.936,
+    "specificity": 0.448
+   },
+   {
+    "t": 0.24,
+    "sensitivity": 0.929,
+    "specificity": 0.483
+   },
+   {
+    "t": 0.26,
+    "sensitivity": 0.915,
+    "specificity": 0.51
+   },
+   {
+    "t": 0.28,
+    "sensitivity": 0.908,
+    "specificity": 0.533
+   },
+   {
+    "t": 0.3,
+    "sensitivity": 0.894,
+    "specificity": 0.564
+   },
+   {
+    "t": 0.32,
+    "sensitivity": 0.872,
+    "specificity": 0.591
+   },
+   {
+    "t": 0.34,
+    "sensitivity": 0.851,
+    "specificity": 0.637
+   },
+   {
+    "t": 0.36,
+    "sensitivity": 0.844,
+    "specificity": 0.672
+   },
+   {
+    "t": 0.38,
+    "sensitivity": 0.837,
+    "specificity": 0.687
+   },
+   {
+    "t": 0.4,
+    "sensitivity": 0.794,
+    "specificity": 0.714
+   },
+   {
+    "t": 0.42,
+    "sensitivity": 0.787,
+    "specificity": 0.749
+   },
+   {
+    "t": 0.44,
+    "sensitivity": 0.787,
+    "specificity": 0.761
+   },
+   {
+    "t": 0.46,
+    "sensitivity": 0.752,
+    "specificity": 0.772
+   },
+   {
+    "t": 0.48,
+    "sensitivity": 0.752,
+    "specificity": 0.788
+   },
+   {
+    "t": 0.5,
+    "sensitivity": 0.752,
+    "specificity": 0.815
+   },
+   {
+    "t": 0.52,
+    "sensitivity": 0.738,
+    "specificity": 0.83
+   },
+   {
+    "t": 0.54,
+    "sensitivity": 0.709,
+    "specificity": 0.853
+   },
+   {
+    "t": 0.56,
+    "sensitivity": 0.688,
+    "specificity": 0.88
+   },
+   {
+    "t": 0.58,
+    "sensitivity": 0.674,
+    "specificity": 0.888
+   },
+   {
+    "t": 0.6,
+    "sensitivity": 0.638,
+    "specificity": 0.896
+   },
+   {
+    "t": 0.62,
+    "sensitivity": 0.617,
+    "specificity": 0.907
+   },
+   {
+    "t": 0.64,
+    "sensitivity": 0.582,
+    "specificity": 0.911
+   },
+   {
+    "t": 0.66,
+    "sensitivity": 0.574,
+    "specificity": 0.919
+   },
+   {
+    "t": 0.68,
+    "sensitivity": 0.574,
+    "specificity": 0.931
+   },
+   {
+    "t": 0.7,
+    "sensitivity": 0.539,
+    "specificity": 0.942
+   },
+   {
+    "t": 0.72,
+    "sensitivity": 0.525,
+    "specificity": 0.942
+   },
+   {
+    "t": 0.74,
+    "sensitivity": 0.518,
+    "specificity": 0.958
+   },
+   {
+    "t": 0.76,
+    "sensitivity": 0.504,
+    "specificity": 0.961
+   },
+   {
+    "t": 0.78,
+    "sensitivity": 0.468,
+    "specificity": 0.965
+   },
+   {
+    "t": 0.8,
+    "sensitivity": 0.44,
+    "specificity": 0.969
+   },
+   {
+    "t": 0.82,
+    "sensitivity": 0.433,
+    "specificity": 0.973
+   },
+   {
+    "t": 0.84,
+    "sensitivity": 0.433,
+    "specificity": 0.977
+   },
+   {
+    "t": 0.86,
+    "sensitivity": 0.418,
+    "specificity": 0.981
+   },
+   {
+    "t": 0.88,
+    "sensitivity": 0.39,
+    "specificity": 0.981
+   },
+   {
+    "t": 0.9,
+    "sensitivity": 0.369,
+    "specificity": 0.988
+   },
+   {
+    "t": 0.92,
+    "sensitivity": 0.355,
+    "specificity": 0.996
+   },
+   {
+    "t": 0.94,
+    "sensitivity": 0.326,
+    "specificity": 0.996
+   },
+   {
+    "t": 0.96,
+    "sensitivity": 0.27,
+    "specificity": 1.0
+   },
+   {
+    "t": 0.98,
+    "sensitivity": 0.163,
+    "specificity": 1.0
+   }
+  ],
+  "chosen": 0.399,
+  "rule": "highest score threshold with out-of-fold sensitivity >= 80% on the development set",
+  "n_dev": 400
+ },
+ "subgroups": {
+  "incomplete_records": {
+   "n": 63,
+   "categories": {
+    "PATTERN WARRANTS CLINICAL REVIEW": 30,
+    "NO NOTABLE PATTERN IDENTIFIED": 24,
+    "INSUFFICIENT INFORMATION": 9
+   },
+   "vs_constructed": {
+    "n": 63,
+    "tp": 27,
+    "fp": 3,
+    "tn": 19,
+    "fn": 14,
+    "sensitivity": 0.659,
+    "specificity": 0.864,
+    "precision": 0.9,
+    "f1": 0.761,
+    "false_positive_rate": 0.136,
+    "false_negative_rate": 0.341
+   },
+   "vs_hidden_label": {
+    "n": 63,
+    "tp": 26,
+    "fp": 4,
+    "tn": 28,
+    "fn": 5,
+    "sensitivity": 0.839,
+    "specificity": 0.875,
+    "precision": 0.867,
+    "f1": 0.852,
+    "false_positive_rate": 0.125,
+    "false_negative_rate": 0.161
+   }
+  },
+  "alternative_condition_scenarios": {
+   "n": 74,
+   "categories": {
+    "PATTERN WARRANTS CLINICAL REVIEW": 32,
+    "NO NOTABLE PATTERN IDENTIFIED": 42
+   },
+   "vs_constructed": {
+    "n": 74,
+    "tp": 28,
+    "fp": 4,
+    "tn": 33,
+    "fn": 9,
+    "sensitivity": 0.757,
+    "specificity": 0.892,
+    "precision": 0.875,
+    "f1": 0.812,
+    "false_positive_rate": 0.108,
+    "false_negative_rate": 0.243
+   },
+   "vs_hidden_label": {
+    "n": 74,
+    "tp": 18,
+    "fp": 14,
+    "tn": 38,
+    "fn": 4,
+    "sensitivity": 0.818,
+    "specificity": 0.731,
+    "precision": 0.562,
+    "f1": 0.667,
+    "false_positive_rate": 0.269,
+    "false_negative_rate": 0.182
+   }
+  },
+  "varied_terminology": {
+   "n": 10,
+   "categories": {
+    "PATTERN WARRANTS CLINICAL REVIEW": 5,
+    "NO NOTABLE PATTERN IDENTIFIED": 5
+   },
+   "vs_constructed": {
+    "n": 10,
+    "tp": 5,
+    "fp": 0,
+    "tn": 1,
+    "fn": 4,
+    "sensitivity": 0.556,
+    "specificity": 1.0,
+    "precision": 1.0,
+    "f1": 0.714,
+    "false_positive_rate": 0.0,
+    "false_negative_rate": 0.444
+   },
+   "vs_hidden_label": {
+    "n": 10,
+    "tp": 5,
+    "fp": 0,
+    "tn": 5,
+    "fn": 0,
+    "sensitivity": 1.0,
+    "specificity": 1.0,
+    "precision": 1.0,
+    "f1": 1.0,
+    "false_positive_rate": 0.0,
+    "false_negative_rate": 0.0
+   }
+  },
+  "inconsistent_documentation": {
+   "n": 17,
+   "categories": {
+    "PATTERN WARRANTS CLINICAL REVIEW": 8,
+    "NO NOTABLE PATTERN IDENTIFIED": 9
+   },
+   "vs_constructed": {
+    "n": 17,
+    "tp": 8,
+    "fp": 0,
+    "tn": 0,
+    "fn": 9,
+    "sensitivity": 0.471,
+    "specificity": null,
+    "precision": 1.0,
+    "f1": 0.64,
+    "false_positive_rate": null,
+    "false_negative_rate": 0.529
+   },
+   "vs_hidden_label": {
+    "n": 17,
+    "tp": 8,
+    "fp": 0,
+    "tn": 9,
+    "fn": 0,
+    "sensitivity": 1.0,
+    "specificity": 1.0,
+    "precision": 1.0,
+    "f1": 1.0,
+    "false_positive_rate": 0.0,
+    "false_negative_rate": 0.0
+   }
+  },
+  "silent_positives_and_routine": {
+   "n": 16,
+   "categories": {
+    "NO NOTABLE PATTERN IDENTIFIED": 16
+   },
+   "vs_constructed": {
+    "n": 16,
+    "tp": 0,
+    "fp": 0,
+    "tn": 16,
+    "fn": 0,
+    "sensitivity": null,
+    "specificity": 1.0,
+    "precision": null,
+    "f1": 0.0,
+    "false_positive_rate": 0.0,
+    "false_negative_rate": null
+   },
+   "vs_hidden_label": {
+    "n": 16,
+    "tp": 0,
+    "fp": 0,
+    "tn": 10,
+    "fn": 6,
+    "sensitivity": 0.0,
+    "specificity": 1.0,
+    "precision": null,
+    "f1": 0.0,
+    "false_positive_rate": 0.0,
+    "false_negative_rate": 1.0
+   }
+  }
+ },
+ "extraction_quality": {
+  "symptom_precision": 0.994,
+  "symptom_recall": 0.996,
+  "status_accuracy_when_found": 0.998,
+  "menstrual_link_accuracy_when_found": 0.96,
+  "note": "Present/absent/uncertain status and menstrual link scored against the generator's ground truth, per encounter."
+ },
+ "errors_sample": {
+  "false_negatives_vs_label": [
+   {
+    "id": "EVL-0009",
+    "cat": "NO NOTABLE PATTERN IDENTIFIED",
+    "cat_raw": "NO NOTABLE PATTERN IDENTIFIED",
+    "cat_sceptic": "NO NOTABLE PATTERN IDENTIFIED",
+    "sceptic_ran": false,
+    "sceptic_changed": false,
+    "sceptic_verdict": null,
+    "doc_completeness": 1.0,
+    "content_visits": 8.0,
+    "relevant": 3,
+    "score": 0.097,
+    "label": 1,
+    "expected": "NO NOTABLE PATTERN IDENTIFIED",
+    "scenario": "dysmenorrhoea_only",
+    "subtype": "primary_dysmenorrhoea_like",
+    "quality_issues": 0
+   },
+   {
+    "id": "EVL-0027",
+    "cat": "NO NOTABLE PATTERN IDENTIFIED",
+    "cat_raw": "NO NOTABLE PATTERN IDENTIFIED",
+    "cat_sceptic": "NO NOTABLE PATTERN IDENTIFIED",
+    "sceptic_ran": false,
+    "sceptic_changed": false,
+    "sceptic_verdict": null,
+    "doc_completeness": 0.5,
+    "content_visits": 7.0,
+    "relevant": 4,
+    "score": 0.133,
+    "label": 1,
+    "expected": "PATTERN WARRANTS CLINICAL REVIEW",
+    "scenario": "overlapping_conditions",
+    "subtype": "overlap_interstitial_cystitis",
+    "quality_issues": 0
+   },
+   {
+    "id": "EVL-0029",
+    "cat": "NO NOTABLE PATTERN IDENTIFIED",
+    "cat_raw": "NO NOTABLE PATTERN IDENTIFIED",
+    "cat_sceptic": "NO NOTABLE PATTERN IDENTIFIED",
+    "sceptic_ran": false,
+    "sceptic_changed": false,
+    "sceptic_verdict": null,
+    "doc_completeness": 1.0,
+    "content_visits": 6.0,
+    "relevant": 2,
+    "score": 0.016,
+    "label": 1,
+    "expected": "NO NOTABLE PATTERN IDENTIFIED",
+    "scenario": "overlapping_conditions",
+    "subtype": "overlap_adenomyosis",
+    "quality_issues": 0
+   },
+   {
+    "id": "EVL-0037",
+    "cat": "NO NOTABLE PATTERN IDENTIFIED",
+    "cat_raw": "NO NOTABLE PATTERN IDENTIFIED",
+    "cat_sceptic": "NO NOTABLE PATTERN IDENTIFIED",
+    "sceptic_ran": false,
+    "sceptic_changed": false,
+    "sceptic_verdict": null,
+    "doc_completeness": 0.0,
+    "content_visits": 2.0,
+    "relevant": 0,
+    "score": 0.355,
+    "label": 1,
+    "expected": "INSUFFICIENT INFORMATION",
+    "scenario": "insufficient_records",
+    "subtype": "sparse_record",
+    "quality_issues": 0
+   },
+   {
+    "id": "EVL-0039",
+    "cat": "INSUFFICIENT INFORMATION",
+    "cat_raw": "INSUFFICIENT INFORMATION",
+    "cat_sceptic": "INSUFFICIENT INFORMATION",
+    "sceptic_ran": false,
+    "sceptic_changed": false,
+    "sceptic_verdict": null,
+    "doc_completeness": 0.0,
+    "content_visits": 2.0,
+    "relevant": 1,
+    "score": 0.563,
+    "label": 1,
+    "expected": "INSUFFICIENT INFORMATION",
+    "scenario": "insufficient_records",
+    "subtype": "sparse_record",
+    "quality_issues": 0
+   },
+   {
+    "id": "EVL-0041",
+    "cat": "INSUFFICIENT INFORMATION",
+    "cat_raw": "INSUFFICIENT INFORMATION",
+    "cat_sceptic": "INSUFFICIENT INFORMATION",
+    "sceptic_ran": false,
+    "sceptic_changed": false,
+    "sceptic_verdict": null,
+    "doc_completeness": 0.0,
+    "content_visits": 0.0,
+    "relevant": 0,
+    "score": 0.336,
+    "label": 1,
+    "expected": "INSUFFICIENT INFORMATION",
+    "scenario": "insufficient_records",
+    "subtype": "sparse_record",
+    "quality_issues": 0
+   },
+   {
+    "id": "EVL-0049",
+    "cat": "NO NOTABLE PATTERN IDENTIFIED",
+    "cat_raw": "NO NOTABLE PATTERN IDENTIFIED",
+    "cat_sceptic": "NO NOTABLE PATTERN IDENTIFIED",
+    "sceptic_ran": false,
+    "sceptic_changed": false,
+    "sceptic_verdict": null,
+    "doc_completeness": 1.0,
+    "content_visits": 8.0,
+    "relevant": 1,
+    "score": 0.182,
+    "label": 1,
+    "expected": "NO NOTABLE PATTERN IDENTIFIED",
+    "scenario": "isolated_symptom",
+    "subtype": "isolated",
+    "quality_issues": 0
+   },
+   {
+    "id": "EVL-0051",
+    "cat": "NO NOTABLE PATTERN IDENTIFIED",
+    "cat_raw": "NO NOTABLE PATTERN IDENTIFIED",
+    "cat_sceptic": "NO NOTABLE PATTERN IDENTIFIED",
+    "sceptic_ran": false,
+    "sceptic_changed": false,
+    "sceptic_verdict": null,
+    "doc_completeness": 0.0,
+    "content_visits": 3.0,
+    "relevant": 0,
+    "score": 0.307,
+    "label": 1,
+    "expected": "NO NOTABLE PATTERN IDENTIFIED",
+    "scenario": "isolated_symptom",
+    "subtype": "isolated",
+    "quality_issues": 0
+   },
+   {
+    "id": "EVL-0053",
+    "cat": "NO NOTABLE PATTERN IDENTIFIED",
+    "cat_raw": "NO NOTABLE PATTERN IDENTIFIED",
+    "cat_sceptic": "NO NOTABLE PATTERN IDENTIFIED",
+    "sceptic_ran": false,
+    "sceptic_changed": false,
+    "sceptic_verdict": null,
+    "doc_completeness": 0.0,
+    "content_visits": 6.0,
+    "relevant": 0,
+    "score": 0.499,
+    "label": 1,
+    "expected": "NO NOTABLE PATTERN IDENTIFIED",
+    "scenario": "isolated_symptom",
+    "subtype": "isolated",
+    "quality_issues": 0
+   },
+   {
+    "id": "EVL-0075",
+    "cat": "NO NOTABLE PATTERN IDENTIFIED",
+    "cat_raw": "NO NOTABLE PATTERN IDENTIFIED",
+    "cat_sceptic": "NO NOTABLE PATTERN IDENTIFIED",
+    "sceptic_ran": false,
+    "sceptic_changed": false,
+    "sceptic_verdict": null,
+    "doc_completeness": 0.0,
+    "content_visits": 8.0,
+    "relevant": 0,
+    "score": 0.369,
+    "label": 1,
+    "expected": "NO NOTABLE PATTERN IDENTIFIED",
+    "scenario": "isolated_symptom",
+    "subtype": "isolated",
+    "quality_issues": 0
+   },
+   {
+    "id": "EVL-0092",
+    "cat": "NO NOTABLE PATTERN IDENTIFIED",
+    "cat_raw": "NO NOTABLE PATTERN IDENTIFIED",
+    "cat_sceptic": "NO NOTABLE PATTERN IDENTIFIED",
+    "sceptic_ran": false,
+    "sceptic_changed": false,
+    "sceptic_verdict": null,
+    "doc_completeness": 0.0,
+    "content_visits": 6.0,
+    "relevant": 0,
+    "score": 0.495,
+    "label": 1,
+    "expected": "NO NOTABLE PATTERN IDENTIFIED",
+    "scenario": "routine_unrelated",
+    "subtype": "silent",
+    "quality_issues": 0
+   },
+   {
+    "id": "EVL-0100",
+    "cat": "NO NOTABLE PATTERN IDENTIFIED",
+    "cat_raw": "NO NOTABLE PATTERN IDENTIFIED",
+    "cat_sceptic": "NO NOTABLE PATTERN IDENTIFIED",
+    "sceptic_ran": false,
+    "sceptic_changed": false,
+    "sceptic_verdict": null,
+    "doc_completeness": 0.0,
+    "content_visits": 8.0,
+    "relevant": 0,
+    "score": 0.389,
+    "label": 1,
+    "expected": "NO NOTABLE PATTERN IDENTIFIED",
+    "scenario": "routine_unrelated",
+    "subtype": "silent",
+    "quality_issues": 0
+   },
+   {
+    "id": "EVL-0111",
+    "cat": "NO NOTABLE PATTERN IDENTIFIED",
+    "cat_raw": "NO NOTABLE PATTERN IDENTIFIED",
+    "cat_sceptic": "NO NOTABLE PATTERN IDENTIFIED",
+    "sceptic_ran": false,
+    "sceptic_changed": false,
+    "sceptic_verdict": null,
+    "doc_completeness": 1.0,
+    "content_visits": 4.0,
+    "relevant": 4,
+    "score": 0.125,
+    "label": 1,
+    "expected": "NO NOTABLE PATTERN IDENTIFIED",
+    "scenario": "pelvic_pain_no_menstrual_link",
+    "subtype": "noncyclical_documentation",
+    "quality_issues": 0
+   },
+   {
+    "id": "EVL-0121",
+    "cat": "INSUFFICIENT INFORMATION",
+    "cat_raw": "INSUFFICIENT INFORMATION",
+    "cat_sceptic": "INSUFFICIENT INFORMATION",
+    "sceptic_ran": false,
+    "sceptic_changed": false,
+    "sceptic_verdict": null,
+    "doc_completeness": 0.0,
+    "content_visits": 2.0,
+    "relevant": 1,
+    "score": 0.576,
+    "label": 1,
+    "expected": "INSUFFICIENT INFORMATION",
+    "scenario": "insufficient_records",
+    "subtype": "sparse_record",
+    "quality_issues": 0
+   },
+   {
+    "id": "EVL-0125",
+    "cat": "NO NOTABLE PATTERN IDENTIFIED",
+    "cat_raw": "NO NOTABLE PATTERN IDENTIFIED",
+    "cat_sceptic": "NO NOTABLE PATTERN IDENTIFIED",
+    "sceptic_ran": false,
+    "sceptic_changed": false,
+    "sceptic_verdict": null,
+    "doc_completeness": 1.0,
+    "content_visits": 6.0,
+    "relevant": 2,
+    "score": 0.346,
+    "label": 1,
+    "expected": "NO NOTABLE PATTERN IDENTIFIED",
+    "scenario": "dysmenorrhoea_only",
+    "subtype": "dysmenorrhoea_persistent",
+    "quality_issues": 0
+   }
+  ],
+  "false_positives_vs_label": [
+   {
+    "id": "EVL-0004",
+    "cat": "PATTERN WARRANTS CLINICAL REVIEW",
+    "cat_raw": "PATTERN WARRANTS CLINICAL REVIEW",
+    "cat_sceptic": "PATTERN WARRANTS CLINICAL REVIEW",
+    "sceptic_ran": true,
+    "sceptic_changed": false,
+    "sceptic_verdict": "upheld",
+    "doc_completeness": 1.0,
+    "content_visits": 7.0,
+    "relevant": 4,
+    "score": 0.466,
+    "label": 0,
+    "expected": "PATTERN WARRANTS CLINICAL REVIEW",
+    "scenario": "cyclical_pelvic_pain",
+    "subtype": "mimic_cyclical",
+    "quality_issues": 1
+   },
+   {
+    "id": "EVL-0008",
+    "cat": "PATTERN WARRANTS CLINICAL REVIEW",
+    "cat_raw": "PATTERN WARRANTS CLINICAL REVIEW",
+    "cat_sceptic": "PATTERN WARRANTS CLINICAL REVIEW",
+    "sceptic_ran": true,
+    "sceptic_changed": false,
+    "sceptic_verdict": "upheld",
+    "doc_completeness": 1.0,
+    "content_visits": 7.0,
+    "relevant": 6,
+    "score": 0.085,
+    "label": 0,
+    "expected": "PATTERN WARRANTS CLINICAL REVIEW",
+    "scenario": "dysmenorrhoea_only",
+    "subtype": "primary_dysmenorrhoea_like",
+    "quality_issues": 0
+   },
+   {
+    "id": "EVL-0020",
+    "cat": "PATTERN WARRANTS CLINICAL REVIEW",
+    "cat_raw": "PATTERN WARRANTS CLINICAL REVIEW",
+    "cat_sceptic": "PATTERN WARRANTS CLINICAL REVIEW",
+    "sceptic_ran": true,
+    "sceptic_changed": false,
+    "sceptic_verdict": "weakened",
+    "doc_completeness": 1.0,
+    "content_visits": 7.0,
+    "relevant": 4,
+    "score": 0.817,
+    "label": 0,
+    "expected": "PATTERN WARRANTS CLINICAL REVIEW",
+    "scenario": "pelvic_pain_no_menstrual_link",
+    "subtype": "other_pelvic_pain",
+    "quality_issues": 0
+   },
+   {
+    "id": "EVL-0026",
+    "cat": "PATTERN WARRANTS CLINICAL REVIEW",
+    "cat_raw": "PATTERN WARRANTS CLINICAL REVIEW",
+    "cat_sceptic": "PATTERN WARRANTS CLINICAL REVIEW",
+    "sceptic_ran": true,
+    "sceptic_changed": false,
+    "sceptic_verdict": "upheld",
+    "doc_completeness": 1.0,
+    "content_visits": 8.0,
+    "relevant": 7,
+    "score": 0.619,
+    "label": 0,
+    "expected": "PATTERN WARRANTS CLINICAL REVIEW",
+    "scenario": "overlapping_conditions",
+    "subtype": "overlap_pid",
+    "quality_issues": 0
+   },
+   {
+    "id": "EVL-0028",
+    "cat": "PATTERN WARRANTS CLINICAL REVIEW",
+    "cat_raw": "PATTERN WARRANTS CLINICAL REVIEW",
+    "cat_sceptic": "PATTERN WARRANTS CLINICAL REVIEW",
+    "sceptic_ran": true,
+    "sceptic_changed": false,
+    "sceptic_verdict": "weakened",
+    "doc_completeness": 1.0,
+    "content_visits": 9.0,
+    "relevant": 7,
+    "score": 0.539,
+    "label": 0,
+    "expected": "PATTERN WARRANTS CLINICAL REVIEW",
+    "scenario": "overlapping_conditions",
+    "subtype": "overlap_pid",
+    "quality_issues": 0
+   },
+   {
+    "id": "EVL-0032",
+    "cat": "PATTERN WARRANTS CLINICAL REVIEW",
+    "cat_raw": "PATTERN WARRANTS CLINICAL REVIEW",
+    "cat_sceptic": "PATTERN WARRANTS CLINICAL REVIEW",
+    "sceptic_ran": true,
+    "sceptic_changed": false,
+    "sceptic_verdict": "upheld",
+    "doc_completeness": 0.9,
+    "content_visits": 14.0,
+    "relevant": 10,
+    "score": 0.0,
+    "label": 0,
+    "expected": "PATTERN WARRANTS CLINICAL REVIEW",
+    "scenario": "repeated_inconclusive",
+    "subtype": "frequent_attender",
+    "quality_issues": 0
+   },
+   {
+    "id": "EVL-0061",
+    "cat": "PATTERN WARRANTS CLINICAL REVIEW",
+    "cat_raw": "PATTERN WARRANTS CLINICAL REVIEW",
+    "cat_sceptic": "PATTERN WARRANTS CLINICAL REVIEW",
+    "sceptic_ran": true,
+    "sceptic_changed": false,
+    "sceptic_verdict": "weakened",
+    "doc_completeness": 1.0,
+    "content_visits": 7.0,
+    "relevant": 4,
+    "score": 0.53,
+    "label": 0,
+    "expected": "PATTERN WARRANTS CLINICAL REVIEW",
+    "scenario": "pelvic_pain_no_menstrual_link",
+    "subtype": "other_pelvic_pain",
+    "quality_issues": 0
+   },
+   {
+    "id": "EVL-0070",
+    "cat": "PATTERN WARRANTS CLINICAL REVIEW",
+    "cat_raw": "PATTERN WARRANTS CLINICAL REVIEW",
+    "cat_sceptic": "PATTERN WARRANTS CLINICAL REVIEW",
+    "sceptic_ran": true,
+    "sceptic_changed": false,
+    "sceptic_verdict": "upheld",
+    "doc_completeness": 0.83,
+    "content_visits": 9.0,
+    "relevant": 6,
+    "score": 0.517,
+    "label": 0,
+    "expected": "PATTERN WARRANTS CLINICAL REVIEW",
+    "scenario": "dysmenorrhoea_only",
+    "subtype": "dysmenorrhoea_persistent",
+    "quality_issues": 0
+   },
+   {
+    "id": "EVL-0082",
+    "cat": "PATTERN WARRANTS CLINICAL REVIEW",
+    "cat_raw": "PATTERN WARRANTS CLINICAL REVIEW",
+    "cat_sceptic": "PATTERN WARRANTS CLINICAL REVIEW",
+    "sceptic_ran": true,
+    "sceptic_changed": false,
+    "sceptic_verdict": "upheld",
+    "doc_completeness": 1.0,
+    "content_visits": 4.0,
+    "relevant": 4,
+    "score": 0.461,
+    "label": 0,
+    "expected": "PATTERN WARRANTS CLINICAL REVIEW",
+    "scenario": "cyclical_pelvic_pain",
+    "subtype": "mimic_cyclical",
+    "quality_issues": 0
+   },
+   {
+    "id": "EVL-0090",
+    "cat": "PATTERN WARRANTS CLINICAL REVIEW",
+    "cat_raw": "PATTERN WARRANTS CLINICAL REVIEW",
+    "cat_sceptic": "PATTERN WARRANTS CLINICAL REVIEW",
+    "sceptic_ran": true,
+    "sceptic_changed": false,
+    "sceptic_verdict": "weakened",
+    "doc_completeness": 1.0,
+    "content_visits": 5.0,
+    "relevant": 2,
+    "score": 0.585,
+    "label": 0,
+    "expected": "NO NOTABLE PATTERN IDENTIFIED",
+    "scenario": "pelvic_pain_no_menstrual_link",
+    "subtype": "other_pelvic_pain",
+    "quality_issues": 0
+   },
+   {
+    "id": "EVL-0108",
+    "cat": "PATTERN WARRANTS CLINICAL REVIEW",
+    "cat_raw": "PATTERN WARRANTS CLINICAL REVIEW",
+    "cat_sceptic": "PATTERN WARRANTS CLINICAL REVIEW",
+    "sceptic_ran": true,
+    "sceptic_changed": false,
+    "sceptic_verdict": "weakened",
+    "doc_completeness": 0.5,
+    "content_visits": 7.0,
+    "relevant": 2,
+    "score": 0.475,
+    "label": 0,
+    "expected": "NO NOTABLE PATTERN IDENTIFIED",
+    "scenario": "gi_non_menstrual",
+    "subtype": "ibs",
+    "quality_issues": 0
+   },
+   {
+    "id": "EVL-0113",
+    "cat": "PATTERN WARRANTS CLINICAL REVIEW",
+    "cat_raw": "PATTERN WARRANTS CLINICAL REVIEW",
+    "cat_sceptic": "PATTERN WARRANTS CLINICAL REVIEW",
+    "sceptic_ran": true,
+    "sceptic_changed": false,
+    "sceptic_verdict": "weakened",
+    "doc_completeness": 0.0,
+    "content_visits": 3.0,
+    "relevant": 3,
+    "score": 0.784,
+    "label": 0,
+    "expected": "INSUFFICIENT INFORMATION",
+    "scenario": "insufficient_records",
+    "subtype": "sparse_record",
+    "quality_issues": 1
+   },
+   {
+    "id": "EVL-0119",
+    "cat": "PATTERN WARRANTS CLINICAL REVIEW",
+    "cat_raw": "PATTERN WARRANTS CLINICAL REVIEW",
+    "cat_sceptic": "PATTERN WARRANTS CLINICAL REVIEW",
+    "sceptic_ran": true,
+    "sceptic_changed": false,
+    "sceptic_verdict": "upheld",
+    "doc_completeness": 1.0,
+    "content_visits": 5.0,
+    "relevant": 4,
+    "score": 0.843,
+    "label": 0,
+    "expected": "PATTERN WARRANTS CLINICAL REVIEW",
+    "scenario": "cyclical_pelvic_pain",
+    "subtype": "mimic_cyclical",
+    "quality_issues": 0
+   },
+   {
+    "id": "EVL-0141",
+    "cat": "PATTERN WARRANTS CLINICAL REVIEW",
+    "cat_raw": "PATTERN WARRANTS CLINICAL REVIEW",
+    "cat_sceptic": "PATTERN WARRANTS CLINICAL REVIEW",
+    "sceptic_ran": true,
+    "sceptic_changed": false,
+    "sceptic_verdict": "weakened",
+    "doc_completeness": 0.67,
+    "content_visits": 7.0,
+    "relevant": 3,
+    "score": 0.402,
+    "label": 0,
+    "expected": "PATTERN WARRANTS CLINICAL REVIEW",
+    "scenario": "overlapping_conditions",
+    "subtype": "overlap_adenomyosis",
+    "quality_issues": 0
+   },
+   {
+    "id": "EVL-0143",
+    "cat": "PATTERN WARRANTS CLINICAL REVIEW",
+    "cat_raw": "PATTERN WARRANTS CLINICAL REVIEW",
+    "cat_sceptic": "PATTERN WARRANTS CLINICAL REVIEW",
+    "sceptic_ran": true,
+    "sceptic_changed": false,
+    "sceptic_verdict": "upheld",
+    "doc_completeness": 1.0,
+    "content_visits": 6.0,
+    "relevant": 5,
+    "score": 0.506,
+    "label": 0,
+    "expected": "PATTERN WARRANTS CLINICAL REVIEW",
+    "scenario": "pelvic_pain_no_menstrual_link",
+    "subtype": "other_pelvic_pain",
+    "quality_issues": 1
+   }
+  ]
+ },
+ "extractor_comparison": {
+  "lexicon": {
+   "symptom_precision": 0.998,
+   "symptom_recall": 0.936,
+   "status_accuracy_when_found": 0.996,
+   "menstrual_link_accuracy_when_found": 0.945,
+   "note": "Present/absent/uncertain status and menstrual link scored against the generator's ground truth, per encounter.",
+   "sensitivity": 0.685,
+   "specificity": 0.795
+  },
+  "llm:anthropic/claude-sonnet-5.5-20260928": {
+   "symptom_precision": 0.994,
+   "symptom_recall": 0.996,
+   "status_accuracy_when_found": 0.998,
+   "menstrual_link_accuracy_when_found": 0.96,
+   "note": "Present/absent/uncertain status and menstrual link scored against the generator's ground truth, per encounter.",
+   "sensitivity": 0.712,
+   "specificity": 0.819
+  }
+ }
+}

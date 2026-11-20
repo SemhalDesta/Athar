@@ -1,0 +1,33 @@
+# Secrets: never commit your API key
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+
+# Frontend
+node_modules/
+frontend/dist/
+
+# Raw LLM responses and old caches (large, not needed to run the app)
+data/cache/llm/
+data/cache/_old/
+
+# Local demo state
+data/outputs/decisions.json
+data/outputs/workflow.json
+
+# Removed features kept locally
+_unused/
+
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.log
