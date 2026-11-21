@@ -1,4 +1,4 @@
-"""Sceptic agent: quotes are verified by code, and the outcome can only move down."""
+"""Sceptic reviewer: quotes are verified by code, and the outcome can only move down."""
 from athar.agents import sceptic as sc
 from athar.pipeline import Athar, extract_all, load_records
 from athar.schemas import Category

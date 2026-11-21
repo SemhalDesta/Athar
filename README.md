@@ -66,9 +66,9 @@ All LLM responses are cached in `data/cache/llm/`, so re-runs are free. To choos
 
 The repository already ships with offline data, a trained model and an evaluation report, so the API and frontend work before you run any LLM step.
 
-## Sceptic agent
+## Sceptic reviewer
 
-After the model and rules, a second AI agent reviews every flagged record and argues against it: possible misread notes,
+After the model and rules, a second LLM call (the sceptic reviewer) checks every flagged record and argues against it: possible misread notes,
 other documented explanations, and gaps in the record. Every challenge must quote the note; code discards any quote it
 cannot find, and the sceptic can only downgrade a flag, never create one.
 

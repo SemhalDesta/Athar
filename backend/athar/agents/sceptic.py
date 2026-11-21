@@ -1,11 +1,11 @@
-"""Sceptic agent: an LLM reviewer that argues against each flag.
+"""Sceptic reviewer: an LLM reviewer that argues against each flag.
 
 It may raise three kinds of challenge, and every one must quote the record word for word:
   misread      a finding the quote does not support (negation, hedging, history, someone else)
   alternative  another condition documented in the record that could explain the pain
   gap          something needed to judge the pattern that was never recorded (informational)
 
-Code, not the agent, decides what a challenge is worth:
+Code, not the LLM, decides what a challenge is worth:
   * quotes that cannot be found verbatim in the cited visit are discarded;
   * verified misreads correct the extracted findings, then features, model and rules run again;
   * a verified major alternative explanation downgrades a flag to INSUFFICIENT INFORMATION;
@@ -236,8 +236,8 @@ def apply_to_assessment(a: Assessment, res: Optional[ScepticResult]) -> Assessme
         return a
     out = a.model_copy(deep=True)
     out.category = Category(res.final_category)
-    out.reasons = out.reasons + [f"Sceptic agent: {res.reason}"]
-    out.guardrails_applied = out.guardrails_applied + [f"Flag downgraded by the sceptic agent: {res.reason}"]
+    out.reasons = out.reasons + [f"Sceptic reviewer: {res.reason}"]
+    out.guardrails_applied = out.guardrails_applied + [f"Flag downgraded by the sceptic reviewer: {res.reason}"]
     return out
 
 

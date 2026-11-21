@@ -159,7 +159,7 @@ def evaluate(extractor: str = "auto") -> dict:
             "all_patients": binary([x["label"] for x in rows], flag(rows)),
             "model_score_auc": round(roc_auc_score([x["label"] for x in scored], [x["score"] for x in scored]), 3) if scored else None,
         },
-        "pipeline": "LLM reader + model + rules + sceptic agent" if use_sceptic else "LLM reader + model + rules (sceptic not run on every flag)",
+        "pipeline": "LLM reader + model + rules + sceptic reviewer" if use_sceptic else "LLM reader + model + rules (sceptic not run on every flag)",
         "sceptic": {
             "coverage": round(coverage, 3), "flags_reviewed": sum(x["sceptic_ran"] for x in flagged_raw), "flags_total": len(flagged_raw),
             "downgraded": sum(x["sceptic_changed"] for x in rows),

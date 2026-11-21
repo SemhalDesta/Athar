@@ -29,9 +29,9 @@ export function AgentTrace({ d, extractor }: { d: PatientDetail; extractor: stri
     { who: "Clinical rules", role: "Code", state: "done",
       text: `${CATEGORY_TEXT[beforeKey].long}.${a.guardrails_applied.filter((g) => !g.startsWith("Flag downgraded by the sceptic")).length ? " A guardrail held the flag back." : ""}` },
     s?.ran
-      ? { who: "Sceptic agent", role: "AI", state: s.changed ? "changed" : "done",
+      ? { who: "Sceptic reviewer", role: "AI", state: s.changed ? "changed" : "done",
           text: `${verified ? `${verified} challenge${verified > 1 ? "s" : ""} verified` : "No verified challenge"}${gaps ? `, ${gaps} gap${gaps > 1 ? "s" : ""} noted` : ""}${rejected ? `, ${rejected} discarded` : ""}. ${s.changed ? `Downgraded to “${CATEGORY_TEXT[CATEGORY_KEY[s.final_category]].short}”.` : "The flag stands."}` }
-      : { who: "Sceptic agent", role: "AI", state: "skipped", text: beforeKey === "review" ? "Not run on this record yet." : "Only flagged records are challenged." },
+      : { who: "Sceptic reviewer", role: "AI", state: "skipped", text: beforeKey === "review" ? "Not run on this record yet." : "Only flagged records are challenged." },
     { who: "Doctor", role: "Human", state: dec ? "done" : "pending",
       text: dec ? `${dec.decision === "agree" ? "Agreed to assess" : dec.decision === "dismiss" ? "Dismissed the flag" : "Asked for more information"} on ${fmtDate(dec.at.slice(0, 10))}.` : "Waiting for your decision." },
   ];
@@ -61,7 +61,7 @@ export function ScepticPanel({ d, onQuote }: { d: PatientDetail; onQuote: (encou
     return (
       <div className="ws-sec">
         <h3>Sceptic review</h3>
-        <p className="small muted">{key === "review" || s?.original_category === "PATTERN WARRANTS CLINICAL REVIEW" ? "The sceptic agent has not reviewed this flag yet." : "The sceptic only challenges flagged records."}</p>
+        <p className="small muted">{key === "review" || s?.original_category === "PATTERN WARRANTS CLINICAL REVIEW" ? "The sceptic reviewer has not checked this flag yet." : "The sceptic only challenges flagged records."}</p>
       </div>
     );
   }

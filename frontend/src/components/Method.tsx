@@ -47,8 +47,8 @@ const STAGES: Stage[] = [
     detail: () => ["All rule settings live in one configuration file, each with the evidence that motivated it."],
   },
   {
-    key: "sceptic", who: "Sceptic agent", role: "AI", icon: "cross",
-    does: "A second AI argues against every flag. It looks for misread notes, other documented explanations and gaps in the record.",
+    key: "sceptic", who: "Sceptic reviewer", role: "AI", icon: "cross",
+    does: "A second LLM call argues against every flag. It looks for misread notes, other documented explanations and gaps in the record.",
     guard: "Every challenge must quote the note, and code discards any quote it cannot find. A verified misread is corrected and the record re-scored; a confirmed alternative downgrades the flag. The sceptic can only hold a flag back, never create one.",
     detail: (r) => {
       const v = r?.sceptic?.by_verdict;

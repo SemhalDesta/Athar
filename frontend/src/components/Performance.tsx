@@ -149,7 +149,7 @@ export default function Performance() {
     <div className="perf">
       <header className="perf-head">
         <h1>How Athar performs</h1>
-        <p className="lede">Tested on {total} synthetic patients that were never used while building it. {positives} of them have endometriosis according to a hidden label set before their notes were written. Pipeline tested: {r.pipeline ?? "LLM reader, model and rules"}.</p>
+        <p className="lede">Tested on {total} synthetic patients that were never used while building it. {positives} of them have endometriosis according to a hidden label set before their notes were written. Pipeline tested: {(r.pipeline ?? "LLM reader, model and rules").replace("sceptic agent", "sceptic reviewer")}.</p>
       </header>
 
       <section className="perf-metrics">
@@ -199,10 +199,10 @@ export default function Performance() {
           ) : <p className="muted small">Run <code>py -m athar.evaluation.evaluate --compare</code> to add this comparison.</p>}
         </div>
         <div>
-          <h2>What the sceptic adds</h2>
+          <h2>What the sceptic reviewer adds</h2>
           {reviewed ? (
             <>
-              <p className="small">The sceptic reviewed all {sc.flags_total} flags. It downgraded {sc.downgraded}, but its verdict separates strong flags from weak ones:</p>
+              <p className="small">The sceptic reviewer checked all {sc.flags_total} flags. It downgraded {sc.downgraded}, but its verdict separates strong flags from weak ones:</p>
               <div className="verdict-bars">
                 {[["Upheld", bv.upheld?.n ?? 0, bv.upheld?.label_positive ?? 0], ["Weakened", weakenedN, weakenedPos]].map(([name, n, pos]: any) => (
                   <div key={name} className="vb-row" title={`${name}: ${pos} of ${n} have endometriosis`}>
